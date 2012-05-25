@@ -1,13 +1,14 @@
 # config rspec file
-
-require "./lib/globalconfig"
-require "yaml"
+require 'rubygems'
+require 'bundler/setup'
+require './lib/globalconfig'
+require 'yaml'
+require 'aws-sdk'
 
 describe "GlobalConfig" do
   before(:all) do
     @config = ::GlobalConfig.new()
     @configYAML = YAML::load(File.open('./config/config.yml'))
-    @config.gems = @configYAML[ENV['APP_ENV']]['gems']
     @config.aws_access_key = @configYAML[ENV['APP_ENV']]['aws_access_key']
     @config.aws_secret_key = @configYAML[ENV['APP_ENV']]['aws_secret_key']
     @config.elb_name = @configYAML[ENV['APP_ENV']]['elb_name']
@@ -16,12 +17,6 @@ describe "GlobalConfig" do
   describe "YAML Load" do
     it "should load the config.yml file." do
       @configYAML.empty? # => false
-    end
-  end
-  
-  describe "gems" do
-    it "should return an array of gems to require." do
-      @config.gems.should == ['aws-sdk']
     end
   end
   

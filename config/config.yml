@@ -1,6 +1,5 @@
 # Development Environment
 development:
-  gems : ['aws-sdk']
   aws_access_key : 'AKIAJQ4I32FNR26CB3OQ'
   aws_secret_key : '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'
   elb_name : 'GSB'
@@ -8,7 +7,6 @@ development:
   
 # Test Environment
 test:
-  gems : ['aws-sdk']
   aws_access_key : 'AKIAJQ4I32FNR26CB3OQ'
   aws_secret_key : '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'
   elb_name : 'GSB'
@@ -19,7 +17,6 @@ test:
   
 # Production Environment
 production:
-  gems : ['aws-sdk']
   aws_access_key : 'AKIAJQ4I32FNR26CB3OQ'
   aws_secret_key : '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'
   elb_name : 'GSB'

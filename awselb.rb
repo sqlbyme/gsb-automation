@@ -1,20 +1,22 @@
-require "./lib/globalconfig"
-require "yaml"
+require 'rubygems'
+require 'bundler/setup'
+require './lib/globalconfig'
+require 'yaml'
+require 'aws-sdk'
 
-@configYAML = YAML::load(File.open('./config/config.yml'))
-@config = ::GlobalConfig.new()
-@config.gems = @configYAML[ENV['APP_ENV']]['gems']
-@config.aws_access_key = @configYAML[ENV['APP_ENV']]['aws_access_key']
-@config.aws_secret_key = @configYAML[ENV['APP_ENV']]['aws_secret_key']
-@config.elb_name = @configYAML[ENV['APP_ENV']]['elb_name']
+
 
 class AwsElb
  
   attr_accessor :loadBalancer
   
   def initialize()
-    @config.gems.each { |g| require "#{g}"}
-    AWS.config{}
+    @configYAML = YAML::load(File.open('./config/config.yml'))
+    @config = ::GlobalConfig.new()
+    @config.aws_access_key = @configYAML[ENV['APP_ENV']]['aws_access_key']
+    @config.aws_secret_key = @configYAML[ENV['APP_ENV']]['aws_secret_key']
+    @config.elb_name = @configYAML[ENV['APP_ENV']]['elb_name']
+    AWS.config({ :access_key_id => @config.aws_access_key, :secret_access_key => @config.aws_secret_key})
     @loadBalancer = AWS::ELB::LoadBalancer.new('GSB')
   end
   
