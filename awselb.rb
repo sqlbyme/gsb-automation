@@ -13,6 +13,8 @@ class AwsElb
   attr_accessor :loadBalancer
   
   def initialize()
+    @config.gems.each { |g| require "#{g}"}
+    AWS.config{}
     @loadBalancer = AWS::ELB::LoadBalancer.new('GSB')
   end
   
