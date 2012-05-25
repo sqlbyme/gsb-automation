@@ -1,27 +1,37 @@
 # config rspec file
 
-require "./lib/globalconfig"
+require "./lib/config"
+require "yaml"
 
-describe GlobalConfig do
+describe "Config" do
   before(:all) do
-    @config = ::GlobalConfig.new( 'development', ['rubygems', 'rspec'], ['123456', '1234567'])
+    @config = ::Config.new()
+    @configYAML = YAML.load_file('./config/config.yml')
+    @config.aws_access_key = @configYAML['aws_access_key']
+    @config.
   end
   
-  describe "environment" do
-    it "should be equal to the string 'development'." do
-      @config.environment.should == "development" 
+  describe "YAML Load" do
+    it "should load the config.yml file." do
+      @configYAML.empty? # => false
     end
   end
   
   describe "gems" do
     it "should return an array of gems to require." do
-      @config.gems.should == ['rubygems', 'rspec']
+      @config.gems.empty?
     end
   end
   
-  describe "aws" do
-    it "should return an array containg the aws key and secrent needed for the API call." do
-      @config.aws.should == ['123456', '1234567']
+  describe "aws_access_key" do
+    it "should return the aws key needed for the API call." do
+      @config.aws_access_key.empty?
+    end
+  end
+  
+  describe "aws_secret_key" do
+    it "should return the aws secret needed for the API call." do
+      @config.aws_secret_key.empty?
     end
   end
 end

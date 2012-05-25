@@ -1,28 +1,35 @@
-class GlobalConfig
-  def initialize(environment, gems, aws)
-    @environment = environment
-    @gems = gems
-    @aws = aws
+# This is the global config wrapper
+class Config
+
+  def initialize(data={})
+    @data = {}
+    update!(data)
   end
-  
-  def environment
-    @environment
+
+  def update!(data)
+    data.each do |key, value|
+      self[key] = value
+    end
   end
-  
-  def gems
-    @gems
+
+  def [](key)
+    @data[key.to_sym]
   end
-  
-  def aws
-    @aws
+
+  def []=(key, value)
+    if value.class == Hash
+      @data[key.to_sym] = Config.new(value)
+    else
+      @data[key.to_sym] = value
+    end
   end
-  
- def aws_key
-   @aws_key = ''
- end
- 
- def aws_secret
-   @aws_secret = ''
- end
- 
+
+  def method_missing(sym, *args)
+    if sym.to_s =~ /(.+)=$/
+      self[$1] = args.first
+    else
+      self[sym]
+    end
+  end
+
 end
