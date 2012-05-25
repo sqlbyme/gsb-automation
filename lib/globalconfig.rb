@@ -18,7 +18,7 @@ class GlobalConfig
 
   def []=(key, value)
     if value.class == Hash
-      @data[key.to_sym] = Config.new(value)
+      @data[key.to_sym] = GlobalConfig.new(value)
     else
       @data[key.to_sym] = value
     end
