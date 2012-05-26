@@ -18,6 +18,11 @@ class LoadBalancer
     @config.load_balancer_name = @configYAML[ENV['APP_ENV']]['load_balancer_name']
     AWS.config({ :access_key_id => @config.aws_access_key, :secret_access_key => @config.aws_secret_key})
     @load_balancer = AWS::ELB::LoadBalancer.new(@config.load_balancer_name)
-    
   end
+  
+  def get_instances(collection)
+    instances = @collection.instances
+    instances.each { |instance| instance_array.put(AWS::EC2::Instance.new(instance.id)) }
+  end
+
 end

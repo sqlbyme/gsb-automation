@@ -11,6 +11,7 @@ gem 'aws-sdk', '1.5.2'
 # rspec
 gem 'rspec', '2.10.0'
 gem 'rspec-core', '2.10.1'
+gem 'rspec-mocks', '2.10.1'
 
 #webrat
 gem 'webrat', '0.7.1'

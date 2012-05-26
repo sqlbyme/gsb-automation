@@ -43,6 +43,7 @@ DEPENDENCIES
   rake (= 0.9.2.2)
   rspec (= 2.10.0)
   rspec-core (= 2.10.1)
+  rspec-mocks (= 2.10.1)
   rubygems-bundler (= 1.0.2)
   rvm (= 1.11.3.3)
   webrat (= 0.7.1)
