@@ -2,14 +2,14 @@
 development:
   aws_access_key : 'AKIAJQ4I32FNR26CB3OQ'
   aws_secret_key : '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'
-  elb_name : 'GSB'
+  load_balancer_name : 'GSB'
   
   
 # Test Environment
 test:
   aws_access_key : 'AKIAJQ4I32FNR26CB3OQ'
   aws_secret_key : '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'
-  elb_name : 'GSB'
+  load_balancer_name : 'GSB'
    
    
    
@@ -19,5 +19,5 @@ test:
 production:
   aws_access_key : 'AKIAJQ4I32FNR26CB3OQ'
   aws_secret_key : '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'
-  elb_name : 'GSB'
+  load_balancer_name : 'GSB'
 

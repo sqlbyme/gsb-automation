@@ -11,7 +11,7 @@ describe "GlobalConfig" do
     @configYAML = YAML::load(File.open('./config/config.yml'))
     @config.aws_access_key = @configYAML[ENV['APP_ENV']]['aws_access_key']
     @config.aws_secret_key = @configYAML[ENV['APP_ENV']]['aws_secret_key']
-    @config.elb_name = @configYAML[ENV['APP_ENV']]['elb_name']
+    @config.load_balancer_name = @configYAML[ENV['APP_ENV']]['load_balancer_name']
   end
 
   describe "YAML Load" do
@@ -32,9 +32,9 @@ describe "GlobalConfig" do
     end
   end
   
-  describe "elb_name" do
+  describe "load_balancer_name" do
     it "should return the name of the ELB instance we are working on." do
-      @config.elb_name.should == 'GSB'
+      @config.load_balancer_name.should == 'GSB'
     end
   end
 end
