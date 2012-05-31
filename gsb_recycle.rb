@@ -11,7 +11,7 @@ require 'http'
   puts "Starting GSB Server Refresh..."
   
   @configYAML = YAML::load(File.open('./config/config.yml'))
-  @config = ::GlobalConfig.new()
+  @config = GlobalConfig.new()
   @config.aws_access_key = @configYAML[ENV['APP_ENV']]['aws_access_key']
   @config.aws_secret_key = @configYAML[ENV['APP_ENV']]['aws_secret_key']
   @config.load_balancer_name = @configYAML[ENV['APP_ENV']]['load_balancer_name']
