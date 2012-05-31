@@ -5,6 +5,10 @@ gem 'rake', '0.9.2.2'
 gem 'rubygems-bundler', '1.0.2'
 gem 'rvm', '1.11.3.3'
 
+# http
+gem 'http', '0.2.0'
+gem 'curl', '0.0.9'
+
 # aws toolkit
 gem 'aws-sdk', '1.5.2'
 
