@@ -1,5 +1,3 @@
-require 'rubygems'
-require 'bundler/setup'
 require './lib/aws_wrapper'
 
   gsb = AwsWrapper.new()
