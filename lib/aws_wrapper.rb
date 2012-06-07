@@ -27,13 +27,13 @@ class AwsWrapper
   
   def create_new_ec2instances()
   
-    @servers_us_east_1a = @ec2.instances.create(:image_id => "ami-eea80887", 
+    @servers_us_east_1a = @ec2.instances.create(:image_id => "ami-84b616ed", 
                                               :instance_type => "t1.micro",
                                               :security_groups => ['WFE'],
                                               :availability_zone => 'us-east-1a',
                                               :count => 2 )
 
-    @servers_us_east_1d = @ec2.instances.create(:image_id => "ami-eea80887", 
+    @servers_us_east_1d = @ec2.instances.create(:image_id => "ami-84b616ed", 
                                               :instance_type => "t1.micro",
                                               :security_groups => ['WFE'],
                                               :availability_zone => 'us-east-1d',
