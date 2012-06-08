@@ -47,6 +47,7 @@ class AwsWrapper
       sleep 1 until @servers_us_east_1a[0].status == :running
       puts ""
       puts "Server 1 is ready."
+      @servers_us_east_1a[0].tag('Name', :value => 'GSB_WFE_US-EAST-1A-1')
     rescue
       print "."
       retry
@@ -56,6 +57,7 @@ class AwsWrapper
       sleep 1 until @servers_us_east_1a[1].status == :running
       puts ""
       puts "Server 2 is ready."
+      @servers_us_east_1a[1].tag('Name', :value => 'GSB_WFE_US-EAST-1A-2')
     rescue
       print "."
       retry
@@ -65,6 +67,7 @@ class AwsWrapper
       sleep 1 until @servers_us_east_1d[0].status == :running
       puts ""
       puts "Server 3 is ready."
+      @servers_us_east_1d[0].tag('Name', :value => 'GSB_WFE_US-EAST-1D-1')
     rescue
       print "."
       retry
@@ -74,6 +77,7 @@ class AwsWrapper
       sleep 1 until @servers_us_east_1d[1].status == :running
       puts ""
       puts "Server 4 is ready."
+      @servers_us_east_1d[1].tag('Name', :value => 'GSB_WFE_US-EAST-1D-2')
     rescue
       print "."
       retry
