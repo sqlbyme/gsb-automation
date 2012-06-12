@@ -15,43 +15,52 @@ class AwsWrapper
                  :secret_access_key => @config.aws_secret_key,
                  :use_ssl => true })
     @ec2 = AWS::EC2.new()
-    @lb = AWS::ELB::InstanceCollection.new(AWS::ELB::LoadBalancer.new("GSB"))
+    @lb = AWS::ELB.new().load_balancers["GSB"].instances
+    @lb_eu = AWS::ELB.new(:elb_endpoint => 'elasticloadbalancing.eu-west-1.amazonaws.com').load_balancers["GSB"].instances
+    
+    # Setup Data Centers
+    @dc_us_east_1 = @ec2.regions["us-east-1"]
+    @dc_eu_west_1 = @ec2.regions["eu-west-1"]
+    
   end
 
   def get_curent_lb_instances()
     @deregisterArray = []
+    @deregisterArray_eu = []
+    
     @lb.each do |instance|
       @deregisterArray.push(:id => instance.id)
+    end
+    @lb_eu.each do |instance|
+      @deregisterArray_eu.push(:id => instance.id)
     end
   end
   
   def create_new_ec2instances()
   
-    # Setup Data Centers
-    dc_us_east_1 = @ec2.regions["us-east-1"]
-    dc_eu_west_1 = @ec2.regions["eu-west-1"]
+    
     
     # Create US Server Instances First
-    @servers_us_east_1a = dc_us_east_1.instances.create(:image_id => "ami-56f6553f", 
+    @servers_us_east_1a = @dc_us_east_1.instances.create(:image_id => "ami-56f6553f", 
                                                         :instance_type => "t1.micro",
                                                         :security_groups => ['WFE'],
                                                         :availability_zone => 'us-east-1a',
                                                         :count => 2 )
 
-    @servers_us_east_1d = dc_us_east_1.instances.create(:image_id => "ami-56f6553f", 
+    @servers_us_east_1d = @dc_us_east_1.instances.create(:image_id => "ami-56f6553f", 
                                                         :instance_type => "t1.micro",
                                                         :security_groups => ['WFE'],
                                                         :availability_zone => 'us-east-1d',
                                                         :count => 2 )
   
   # Create European Server Instances next
-  @servers_eu_west_1a = dc_eu_west_1.instances.create(:image_id => "ami-cdc8cdb9",
+  @servers_eu_west_1a = @dc_eu_west_1.instances.create(:image_id => "ami-cdc8cdb9",
                                                       :instance_type => "t1.micro",
                                                       :security_groups => "WFE",
                                                       :availability_zone => "eu-west-1a",
                                                       :count => 2 )
 
-  @servers_eu_west_1c = dc_eu_west_1.instances.create(:image_id => "ami-cdc8cdb9",
+  @servers_eu_west_1c = @dc_eu_west_1.instances.create(:image_id => "ami-cdc8cdb9",
                                                       :instance_type => "t1.micro",
                                                       :security_groups => "WFE",
                                                       :availability_zone => "eu-west-1c",
@@ -232,17 +241,31 @@ class AwsWrapper
     @servers_us_east_1d.each do |instance|
       @lb.add(instance)
     end
+    
+    @servers_eu_west_1a.each do |instance|
+      @lb_eu.add(instance)
+    end
+    
+    @servers_eu_west_1c.each do |instance|
+      @lb_eu.add(instance)
+    end
   end
   
   def deregister_dep_servers()
     @deregisterArray.each do |instance|
       @lb.remove(instance[:id])
     end
+    @deregisterArray_eu.each do |instance|
+      @lb_eu.remove(instance[:id])
+    end
   end
   
   def terminate_dep_servers()
     @deregisterArray.each do |instance|
-      @ec2.instances[instance[:id]].terminate
+      @dc_us_east_1.instances[instance[:id]].terminate
+    end
+    @deregisterArray_eu.each do |instance|
+      @dc_eu_west_1.instances[instance[:id]].terminate
     end
   end
   
