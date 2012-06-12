@@ -27,24 +27,39 @@ class AwsWrapper
   
   def create_new_ec2instances()
   
-    # Process the US-EAST-1 region DC first
+    # Setup Data Centers
     dc_us_east_1 = @ec2.regions["us-east-1"]
-    @servers_us_east_1a = dc_us_east_1.instances.create(:image_id => "ami-84b616ed", 
-                                              :instance_type => "t1.micro",
-                                              :security_groups => ['WFE'],
-                                              :availability_zone => 'us-east-1a',
-                                              :count => 2 )
+    dc_eu_west_1 = @ec2.regions["eu-west-1"]
+    
+    # Create US Server Instances First
+    @servers_us_east_1a = dc_us_east_1.instances.create(:image_id => "ami-56f6553f", 
+                                                        :instance_type => "t1.micro",
+                                                        :security_groups => ['WFE'],
+                                                        :availability_zone => 'us-east-1a',
+                                                        :count => 2 )
 
-    @servers_us_east_1d = dc_us_east_1.instances.create(:image_id => "ami-84b616ed", 
-                                              :instance_type => "t1.micro",
-                                              :security_groups => ['WFE'],
-                                              :availability_zone => 'us-east-1d',
-                                              :count => 2 )
+    @servers_us_east_1d = dc_us_east_1.instances.create(:image_id => "ami-56f6553f", 
+                                                        :instance_type => "t1.micro",
+                                                        :security_groups => ['WFE'],
+                                                        :availability_zone => 'us-east-1d',
+                                                        :count => 2 )
   
+  # Create European Server Instances next
+  @servers_eu_west_1a = dc_eu_west_1.instances.create(:image_id => "ami-cdc8cdb9",
+                                                      :instance_type => "t1.micro",
+                                                      :security_groups => "WFE",
+                                                      :availability_zone => "eu-west-1a",
+                                                      :count => 2 )
+
+  @servers_eu_west_1c = dc_eu_west_1.instances.create(:image_id => "ami-cdc8cdb9",
+                                                      :instance_type => "t1.micro",
+                                                      :security_groups => "WFE",
+                                                      :availability_zone => "eu-west-1c",
+                                                      :count =>2 )
   end
   
   def servers_setup?()
-    print "Waiting on server 1."
+    print "Waiting on server US-1."
     begin
       sleep 1 until @servers_us_east_1a[0].status == :running
       puts ""
@@ -54,7 +69,7 @@ class AwsWrapper
       print "."
       retry
     end
-    print "Waiting on server 2."
+    print "Waiting on server US-2."
     begin
       sleep 1 until @servers_us_east_1a[1].status == :running
       puts ""
@@ -64,7 +79,7 @@ class AwsWrapper
       print "."
       retry
     end
-    print "Waiting on server 3."
+    print "Waiting on server US-3."
     begin
       sleep 1 until @servers_us_east_1d[0].status == :running
       puts ""
@@ -74,7 +89,7 @@ class AwsWrapper
       print "."
       retry
     end
-    print "Waiting on server 4."
+    print "Waiting on server US-4."
     begin
       sleep 1 until @servers_us_east_1d[1].status == :running
       puts ""
@@ -84,10 +99,53 @@ class AwsWrapper
       print "."
       retry
     end
+  # End US Setup
+  # Begin EU Setup
+    print "Waiting on server EU-1."
+    begin
+      sleep 1 until @servers_eu_west_1a[0].status == :running
+      puts ""
+      puts "Server EU-1 is ready."
+      @servers_eu_west_1a[0].tag('Name', :value => 'GSB_WFE_EU-WEST-1A-1')
+    rescue
+      print "."
+      retry
+    end
+    print "Waiting on server EU-2."
+    begin
+      sleep 1 until @servers_eu_west_1a[1].status == :running
+      puts ""
+      puts "Server EU-2 is ready."
+      @servers_eu_west_1a[1].tag('Name', :value => 'GSB_WFE_EU-WEST-1A-2')
+    rescue
+      print "."
+      retry
+    end
+    print "Waiting on server EU-3."
+    begin
+      sleep 1 until @servers_eu_west_1c[0].status == :running
+      puts ""
+      puts "Server EU-3 is ready."
+      @servers_eu_west_1c[0].tag('Name', :value => 'GSB_WFE_EU-WEST-1C-1')
+    rescue
+      print "."
+      retry
+    end
+    print "Waiting on server EU-4."
+    begin
+      sleep 1 until @servers_eu_west_1c[1].status == :running
+      puts ""
+      puts "Server EU-4 is ready."
+      @servers_eu_west_1c[1].tag('Name', :value => 'GSB_WFE_EU-WEST-1C-2')
+    rescue
+      print "."
+      retry
+    end
+  # End EU Setup
   end
-  
+
   def servers_running?()
-    print "Waiting on a 200 response from server 1."
+    print "Waiting on a 200 response from server US-1."
     begin
       sleep 10 until Http.head("http://" + @servers_us_east_1a[0].dns_name).status == 200
       puts ""
@@ -96,7 +154,7 @@ class AwsWrapper
       print "."
       retry
     end
-    print "Waiting on a 200 response from server 2."
+    print "Waiting on a 200 response from server US-2."
     begin
       sleep 10 until Http.head("http://" + @servers_us_east_1a[1].dns_name).status == 200
       puts ""
@@ -105,7 +163,7 @@ class AwsWrapper
       print "."
       retry
     end
-    print "Waiting on a 200 response from server 3."
+    print "Waiting on a 200 response from server US-3."
     begin
       sleep 10 until Http.head("http://" + @servers_us_east_1d[0].dns_name).status == 200
       puts ""
@@ -114,9 +172,45 @@ class AwsWrapper
       print "."
       retry
     end
-    print "Waiting on a 200 response from server 4."
+    print "Waiting on a 200 response from server US-4."
     begin
       sleep 10 until Http.head("http://" + @servers_us_east_1d[1].dns_name).status == 200
+      puts ""
+      puts "Server 4 running."
+    rescue
+      print "."
+      retry
+    end
+    print "Waiting on a 200 response from server EU-1."
+    begin
+      sleep 10 until Http.head("http://" + @servers_eu_west_1a[0].dns_name).status == 200
+      puts ""
+      puts "Server 4 running."
+    rescue
+      print "."
+      retry
+    end
+    print "Waiting on a 200 response from server EU-2."
+    begin
+      sleep 10 until Http.head("http://" + @servers_eu_west_1a[1].dns_name).status == 200
+      puts ""
+      puts "Server 4 running."
+    rescue
+      print "."
+      retry
+    end
+    print "Waiting on a 200 response from server EU-3."
+    begin
+      sleep 10 until Http.head("http://" + @servers_eu_west_1c[0].dns_name).status == 200
+      puts ""
+      puts "Server 4 running."
+    rescue
+      print "."
+      retry
+    end
+    print "Waiting on a 200 response from server EU-4."
+    begin
+      sleep 10 until Http.head("http://" + @servers_eu_west_1c[1].dns_name).status == 200
       puts ""
       puts "Server 4 running."
     rescue
