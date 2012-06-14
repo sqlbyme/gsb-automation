@@ -12,6 +12,9 @@ gem 'curl', '0.0.9'
 # aws toolkit
 gem 'aws-sdk', '1.5.2'
 
+# CloudyScripts - used to manage AWS AMi's
+gem "CloudyScripts", "~> 2.14.52"
+
 # rspec
 gem 'rspec', '2.10.0'
 gem 'rspec-core', '2.10.1'
