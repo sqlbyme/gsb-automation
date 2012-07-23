@@ -45,12 +45,14 @@ class AwsWrapper
                                                         :instance_type => "t1.micro",
                                                         :security_groups => ['WFE'],
                                                         :availability_zone => 'us-east-1a',
+                                                        :block_device_mappings => {:snapshot_id => 'snap-74791c05', :volume_size => '8GB', :delete_on_termination => 'true'},
                                                         :count => 2 )
 
     @servers_us_east_1d = @dc_us_east_1.instances.create(:image_id => "ami-1169c778", 
                                                         :instance_type => "t1.micro",
                                                         :security_groups => ['WFE'],
                                                         :availability_zone => 'us-east-1d',
+                                                        :block_device_mappings => {:snapshot_id => 'snap-74791c05', :volume_size => '8GB', :delete_on_termination => 'true'},
                                                         :count => 2 )
   
   # Create European Server Instances next
