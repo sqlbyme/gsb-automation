@@ -56,13 +56,13 @@ class AwsWrapper
                                                         :count => 2 )
   
   # Create European Server Instances next
-  @servers_eu_west_1a = @dc_eu_west_1.instances.create(:image_id => "ami-1f8e8a6b",
+  @servers_eu_west_1a = @dc_eu_west_1.instances.create(:image_id => "ami-7b06060f",
                                                       :instance_type => "t1.micro",
                                                       :security_groups => "WFE",
                                                       :availability_zone => "eu-west-1a",
                                                       :count => 2 )
 
-  #@servers_eu_west_1c = @dc_eu_west_1.instances.create(:image_id => "ami-1f8e8a6b",
+  #@servers_eu_west_1c = @dc_eu_west_1.instances.create(:image_id => "ami-7b06060f",
   #                                                    :instance_type => "t1.micro",
   #                                                    :security_groups => "WFE",
   #                                                    :availability_zone => "eu-west-1c",
