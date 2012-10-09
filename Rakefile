@@ -9,3 +9,8 @@ task :spec do
 end
 
 task :default => :spec
+
+desc "Recycle the GSB Servers."
+task :gsb do
+  require './gsb_recycle.rb'
+end
