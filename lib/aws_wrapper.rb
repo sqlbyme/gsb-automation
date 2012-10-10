@@ -41,18 +41,18 @@ class AwsWrapper
     
     
     # Create US Server Instances First
-    @servers_us_east_1a = @dc_us_east_1.instances.create(:image_id => "ami-00f44b69", 
+    @servers_us_east_1a = @dc_us_east_1.instances.create(:image_id => "ami-68e85701", 
                                                         :instance_type => "t1.micro",
                                                         :security_groups => ['WFE'],
                                                         :availability_zone => 'us-east-1a',
-                                                        :block_device_mappings => { '/dev/sda1' => {:snapshot_id => 'snap-97726ce3', :delete_on_termination => true} },
+                                                        :block_device_mappings => { '/dev/sda1' => {:snapshot_id => 'snap-301a0044', :delete_on_termination => true} },
                                                         :count => 2 )
 
-    @servers_us_east_1d = @dc_us_east_1.instances.create(:image_id => "ami-00f44b69", 
+    @servers_us_east_1d = @dc_us_east_1.instances.create(:image_id => "ami-68e85701", 
                                                         :instance_type => "t1.micro",
                                                         :security_groups => ['WFE'],
                                                         :availability_zone => 'us-east-1d',
-                                                        :block_device_mappings => { '/dev/sda1' => {:snapshot_id => 'snap-97726ce3', :delete_on_termination => true} },
+                                                        :block_device_mappings => { '/dev/sda1' => {:snapshot_id => 'snap-301a0044', :delete_on_termination => true} },
                                                         :count => 2 )
   
   # Create European Server Instances next
